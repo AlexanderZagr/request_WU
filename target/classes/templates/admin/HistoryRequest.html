@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.springframework.org/schema/data/jaxb">
+    
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+    <link layout:fragment="pageStyleLink" rel="stylesheet" th:href="@{'/css/list.css'}" />
+</head>
+
+
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+    <hr/>
+    <div class="row">
+        <div class="col">
+            <div class="d-flex flex-column flex-md-row align-items-center">
+              <th:block th:if="${listWuRequest.getTotalPages()} > 1">
+                <div th:replace="fragmentsHistory/paginationHistory :: pagination(${listWuRequest},${typeRequest})"></div>
+            </th:block>
+            </div>
+    </div>
+        <div class="col">
+          <div class="d-flex flex-column flex-md-row align-items-center">
+                    <div th:replace="fragmentsHistory/filtersHistory :: ready(${ready},${typeRequest})"></div>
+
+          </div>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Номер заявки</th>
+            <!--Для заявок на лимит-->
+            <th th:if="${typeRequest == 'requestLimit'}" scope="col">Сума</th>
+            <th th:if="${typeRequest == 'requestLimit'}" scope="col">Валюта</th>
+            <th th:if="${typeRequest == 'requestLimit'}" scope="col">Відправлено</th>
+
+            <!--Стрелочки сортировки -->
+            <th scope="col" class="dropdown" style="width: 20%">Дата
+                <a th:href="@{'/admin/HistoryRequest/{typeRequest}/{order}'(typeRequest = ${typeRequest}, order = 'abs')}"><i class="icon-arrow-down"></i></a>
+                <a th:href="@{'/admin/HistoryRequest/{typeRequest}/{order}'(typeRequest = ${typeRequest}, order = 'desc')}"><i class="icon-arrow-up"></i></a>
+            </th>
+            <!---У заявок на смену пароля нет комментария-->
+            <th th:if="${typeRequest != 'requestChangePass'}" scope="col">Коментар</th>
+            <th scope="col">ПІБ</th>
+            <!--Для заявок на смену реквизитов-->
+            <th th:if="${typeRequest == 'requestPayment'}" scope="col">Відправленний файл</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each ="person : ${listWuRequest}">
+            <!--Модльное окно с вопросом удалить заявку -->
+            <th:block layout:fragment="modal">
+                <div th:replace="fragmentsHistory/modalHistory :: delete(${person.id},${typeRequest})"></div>
+            </th:block>
+
+            <!--ID заявки, со ссылкой на нее-->
+            <td th:if="${typeRequest == 'requestPayment'}"><a th:href="@{'/admin/changePayment/viewChangePayment/{id}'(id = ${person.id})}"><span th:utext="${person.id}">...</span></a></td>
+            <td th:if="${typeRequest == 'requestLimit'}"><a th:href="@{'/admin/changeLimit/viewChangeLimit/{id}'(id = ${person.id})}"><span th:utext="${person.id}">...</span></a></td>
+
+            <td th:if="${typeRequest == 'requestLimit'}" th:utext="${person.amount}">...</td>
+            <td th:if="${typeRequest == 'requestLimit'}" th:utext="${person.currency}">...</td>
+            <td th:if="${typeRequest == 'requestLimit'}" th:utext="${person.amountSend}">...</td>
+
+            <td th:utext="${person.dateRequest}">...</td>
+            <!---У заявок на смену пароля нет комментария-->
+            <td th:if="${typeRequest != 'requestChangePass'}" th:utext="${person.coment}">...</td>
+
+            <td th:if="${typeRequest == 'requestPayment'}" th:utext="${person.primaryUserPayment.lastName}">...</td>
+            <td th:if="${typeRequest == 'requestLimit'}" th:utext="${person.primaryUser.lastName}">...</td>
+            <td th:if="${typeRequest == 'requestChangePass'}" th:utext="${person.primaryUser.lastName}">...</td>
+
+            <!--Для заявок на смену реквизитов-->
+            <!--<td th:if="${typeRequest == 'requestPayment'}" th:utext="${person.singleFileUploadInput}">...</td>-->
+
+            <!--Кнопка редактировать-->
+            <td style="text-align: center" th:if="${typeRequest == 'requestPayment'}"><a th:href="@{'/admin/changePayment/updateChangePayment/{id}'(id=${person.id})}"><i class="icon-pencil"></i> Редагувати</a></td>
+            <td style="text-align: center" th:if="${typeRequest == 'requestLimit'}"><a th:href="@{'/admin/changeLimit/updateChangeLimit/{id}'(id=${person.id})}"><i class="icon-pencil"></i> Редагувати</a></td>
+            <td style="text-align: center" th:if="${typeRequest == 'requestChangePass'}"><a th:href="@{'/admin/changePass/updateChangePass/{id}'(id=${person.id})}"><i class="icon-pencil"></i> Редагувати</a></td>
+
+            <!--Кнопка удалить с модальным окном-->
+            <td style="..."><a href=# data-toggle="modal" data-target="#deleteBook">
+                <i class="icon-ban-circle"></i> Видалити </a></td>
+           </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

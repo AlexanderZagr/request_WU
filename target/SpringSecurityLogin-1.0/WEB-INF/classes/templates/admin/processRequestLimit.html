@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Boot Thymeleaf + Spring Security</title>
+
+    <div th:replace="fragments/header :: header-css"/>
+
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+    <div class="row">
+        <form autocomplete="off" action="#" th:action="@{/admin/processRequestLimit}"
+                  th:object="${wu_request}" method="post" class="form-horizontal"
+                  role="form">
+                <br/>
+                <h2>Запит на збільшення лімітів на відправку переказів по МПС</h2>             
+                <div class="row">
+                    <div class="col">
+                        <small id="sm_terminal" class="form-text text-muted">Термінал</small>
+                        <input type="text" th:value="${terminal}" class="form-control" id="terminal" aria-describedby="terminalHelp" readonly>
+                    </div>
+                    <div class="col">
+                        <small id="sm_subAgent" class="form-text text-muted">Cубагент</small>
+                        <input type="text" th:value="${subAgent}" class="form-control" id="subAgent" aria-describedby="subAgentHelp" readonly>
+                    </div>
+                    <div class="col">
+                        <small id="sm_code" class="form-text text-muted">Код оператора</small>
+                        <input type="text" th:value="${codeOperator}" class="form-control" id="codeOperator" aria-describedby="subAgentHelp" readonly>
+                    </div>
+                </div>
+                
+                
+                <div class="row">
+                     <div class="col">
+                         <small id="sm_fio" class="form-text text-muted">ПІБ</small>
+                            <input type="text" th:value="${fio}" class="form-control" id="fio" aria-describedby="subAgentHelp" readonly>
+                      </div>
+                </div>
+
+                
+                 <div class="row">
+                   <div class="col">
+                            <small id="sm_mail" class="form-text text-muted">Email</small>
+                            <input type="text"  th:value="${email}" class="form-control" id="email_oper" aria-describedby="subAgentHelp" readonly >
+                        </div>    
+                </div>
+                
+              
+               <div class="form-group">
+                    <label for="amount">Сума</label>
+                    <input type="text" th:field="*{amount}" class="form-control" aria-describedby="amountHelp" placeholder="0.00">
+                    <label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"
+								class="validation-message"></label>  
+                     
+                   
+                </div>
+              
+           
+                <div class="form-group">
+                     <label for="currencyS">Валюта</label>
+                        <select id="currencyS" th:field="*{currency}" class="form-control">
+                            <option value="">--Виберить валюту переказу--</option>
+                            <option value="USD">USD</option>
+                            <option value="UAN">UAN</option>
+                            <option value="EUR">EUR</option>
+                        </select>
+                      <label th:if="${#fields.hasErrors('currency')}" th:errors="*{currency}"
+								class="validation-message"></label>  
+                     
+                </div>
+
+                      
+                <div class="form-group">
+                    <label for="amountSend">Відправлено по терміналу</label>
+                  
+                    <input type="text" th:field="*{amountSend}" class="form-control" id="amountSend" aria-describedby="amountSendHelp" placeholder="0.00">
+                    <label th:if="${#fields.hasErrors('amountSend')}" th:errors="*{amountSend}"
+								class="validation-message"></label>  
+                   
+                  </div>
+                
+                <div class="form-group">
+                     <label for="cooment">Коментар виконавця</label>
+                   <textarea class="form-control" th:field="*{cooment}" id="cooment" rows="3"></textarea>
+                   <small id="coomentHelp" class="form-text text-muted">Коментар виконавця</small>
+                </div>
+                
+                
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <button id="logo" type="submit" class="btn btn-primary btn-block">Відправити запит</button>
+                    </div>
+                </div>
+
+            </form>
+       
+    </div>
+</div>
+
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

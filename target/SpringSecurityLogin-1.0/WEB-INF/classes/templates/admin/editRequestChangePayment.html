@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html lang="ru"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <title>Spring Boot Thymeleaf + Spring Security</title>
+
+    <div th:replace="fragments/header :: header-css"/>
+
+</head>
+<body>
+
+<!--<script src="/js/fileShow.js" th:src="@{'/js/fileShow.js'}"></script>
+-->
+<div th:replace="fragments/header :: header"/>
+
+<div layout:fragment="content" class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <img th:if="${book.getImageData() != null}" th:src="@{/books/{id}/image(id = ${book.getId()})}" class="img-thumbnail" th:id="${'imageBook'}"/>
+                <img th:if="${book.getImageData() == null}" data-src="holder.js/350x500" th:alt="${book.getTitle()}" class="img-thumbnail" th:id="${'imageBook'}"/>
+
+                <img data-src="holder.js/50x100" class="img-thumbnail" id="imageBook"/>
+                <button type="button" class="btn btn-outline-primary mt-2" id="imageUpload">Загрузить обложку</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-3">
+            <form autocomplete="off" enctype="multipart/form-data" th:action="@{/admin/test}"
+                  id="processRequestPayment"  th:object="${wu_request}" method="post" class="form-horizontal"
+                  role="form">
+                <br/>
+                <input type="file" name="file" multiple="" accept="image/*" id="imageInput"/>
+                <h2>Запит на зміну реквізитів переказу</h2>
+                <div class="row">
+                    <div class="col">
+                        <small id="sm_terminal" class="form-text text-muted">Термінал</small>
+                        <input type="text" th:value="${terminal}" class="form-control" id="terminal"
+                               aria-describedby="terminalHelp" readonly>
+                    </div>
+                    <div class="col">
+                        <small id="sm_subAgent" class="form-text text-muted">Cубагент</small>
+                        <input type="text" th:value="${subAgent}" class="form-control" id="subAgent"
+                               aria-describedby="subAgentHelp" readonly>
+                    </div>
+                    <div class="col">
+                        <small id="sm_code" class="form-text text-muted">Код оператора</small>
+                        <input type="text" th:value="${codeOperator}" class="form-control" id="codeOperator"
+                               aria-describedby="subAgentHelp" readonly>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col">
+                        <small id="sm_fio" class="form-text text-muted">ПІБ</small>
+                        <input type="text" th:value="${fio}" class="form-control" id="fio"
+                               aria-describedby="subAgentHelp"
+                               readonly>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col">
+                        <small id="sm_mail" class="form-text text-muted">Email</small>
+                        <input type="text" th:value="${email}" class="form-control" id="email"
+                               aria-describedby="subAgentHelp" readonly>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <small id="comentHelp" class="form-text text-muted">Коментар виконавця</small>
+                        <textarea class="form-control" th:field="*{coment}" id="coment" rows="3"></textarea>
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<br/>
+<!--<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-3">
+            <form id="singleUploadForm" name="singleUploadForm" autocomplete="off" method="post" class="form-horizontal"
+                  role="form">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="custom-file">
+                            <input id="singleFileUploadInput" type="file" class="custom-file-input" name="file" multiple="" >
+                            <label for="singleFileUploadInput" class="custom-file-label text-truncate">Вибрати
+                                файл...</label>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block" form="singleUploadForm">Завантажити файл
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="upload-response">
+                            <div id="singleFileUploadError"></div>
+                            <div id="singleFileUploadSuccess"></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+-->
+<br/>
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <button type="submit" class="btn btn-primary btn-block" form="processRequestPayment">Відправити запит</button>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="scripts">
+    <script th:src="@{'/js/imageLoader.js'}"></script>
+    <script th:inline="javascript">
+        var imageLoader = new ImageLoader('imageUpload', 'imageInput', 'imageBook');
+        imageLoader.init();
+    </script>
+</th:block>
+
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

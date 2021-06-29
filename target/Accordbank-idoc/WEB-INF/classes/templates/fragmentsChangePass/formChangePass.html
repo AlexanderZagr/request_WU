@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.springframework.org/schema/data/jaxb">
+
+<body>
+<!--В форму передаем WUзаявку ,параметры WU юзера, и признак - новая заявка, просмотр, редактирование формы -->
+<th:block th:fragment="book(wuRequest,acWuDictUserTermDiv, action)">
+    <form autocomplete="off" enctype="multipart/form-data"
+          id="processRequestChangePass" modelAttribute="wuRequest" th:object="${wuRequest}"
+          method="post" class="form-horizontal" role="form">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-3">
+                    <h2>Запит на зміну пароля на стартовий</h2>
+                    <div class="row">
+                        <div class="col">
+                            <small id="sm_subAgent" class="form-text text-muted">Номер ТТ</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getTt()}" class="form-control"
+                                   id="subAgent"
+                                   aria-describedby="subAgentHelp" readonly>
+                        </div>
+                        <div class="col">
+                            <small id="sm_sity" class="form-text text-muted">Місто</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getCity()}" class="form-control"
+                                   id="sity"
+                                   aria-describedby="subAgentHelp" readonly>
+                        </div>
+                        <div class="col">
+                            <small id="sm_adress" class="form-text text-muted">Вулиця,дім</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getAddress()}" class="form-control"
+                                   id="adress"
+                                   aria-describedby="subAgentHelp" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <small id="sm_usd" class="form-text text-muted">USD</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getCodeUsd()}" class="form-control"
+                                   id="usd"
+                                   aria-describedby="terminalHelp" readonly>
+                        </div>
+                        <div class="col">
+                            <small id="sm_code" class="form-text text-muted">Код оператора</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getOperatorNo()}" class="form-control"
+                                   id="codeOperator"
+                                   aria-describedby="subAgentHelp" readonly>
+                        </div>
+                        <div class="col">
+                            <small id="sm_fio" class="form-text text-muted">ПІБ</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getOperatorFio()}" class="form-control"
+                                   id="fio"
+                                   aria-describedby="subAgentHelp"
+                                   readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <small id="sm_c" class="form-text text-muted">A- додати, D- видалити , С -змінити</small>
+                            <input type="text" th:value="С" class="form-control"
+                                   id="c"
+                                   aria-describedby="terminalHelp" readonly>
+                        </div>
+                        <div class="col">
+                            <small id="sm_terminal" class="form-text text-muted">Термінал</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getCodeTerminal()}" class="form-control"
+                                   id="terminal"
+                                   aria-describedby="terminalHelp" readonly>
+                        </div>
+                        <div class="col">
+                            <small id="sm_email" class="form-text text-muted">Емейл автора заявки</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getOperatorEmail()}" class="form-control"
+                                   id="email"
+                                   aria-describedby="subAgentHelp"
+                                   readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <!--Если пользователь есть в справочнике WU он может отправдять форму-->
+                    <div th:if="${acWuDictUserTermDiv.getTt()!=0}">
+                    <!--Кнопка сохранения заявки сабмитит форму-->
+                    <button th:if="${action == 'new'}" type="submit" class="btn btn-primary btn-block"
+                            form="processRequestChangePass">
+                        <a th:href="@{/admin/changePass/newChangePass}"
+                           class="btn btn-outline-secondary float-right mr-3"></a>
+                        Відправити запит
+                    </button>
+                    <button th:if="${action == 'update'}" type="submit" class="btn btn-primary btn-block"
+                            form="processRequestChangePass">
+                        <a th:href="@{admin/changeLimit/updateChangeLimit/{id}(id = ${wuRequest.getId()})}"></a>
+                        Зберегти зміни
+                    </button>
+                    </div>
+                </div>
+                <div class="col-2">
+                </div>
+                <div class="col-4">
+                    <a th:href="@{/home/home}" class="btn btn-outline-secondary float-right mr-4">Вийти без
+                        відправки</a>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    </form>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <!--<property name="connection.url">jdbc:mysql://localhost:3306/accord</property>
+    <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+    -->
+    
+    <property name="connection.url">jdbc:mysql://localhost:3306/accord</property>
+    <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+
+
+      <mapping class="com.requst.wu.model.AcWuDictUserTermDiv"/>
+      <mapping class="com.requst.wu.model.DicState"/>
+      <mapping class="com.requst.wu.model.WuRequestLimit"/>
+      <mapping class="com.requst.wu.model.WuRequestPayment"/>
+      <mapping class="com.requst.wu.model.RequestState"/>
+      <mapping class="com.requst.wu.model.WuRequestChangePass"/>
+      <!-- <property name="hbm2ddl.auto">update</property> -->
+  </session-factory>
+</hibernate-configuration>

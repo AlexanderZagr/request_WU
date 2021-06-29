@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.springframework.org/schema/data/jaxb">
+
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+    <link layout:fragment="pageStyleLink" rel="stylesheet" th:href="@{'/css/list.css'}" />
+</head>
+
+<body>
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+    <div class="d-flex flex-column flex-md-row align-items-center">
+
+        <!--<th:block th:if="${listWuRequest.size()} > 1">-->
+            <div th:replace="fragments/pagination :: pagination(${listWuRequest})"></div>
+        <!--</th:block>-->
+    </div>
+    <hr/>
+    <div class="d-flex flex-column flex-md-row align-items-center mb-3">
+        <div class="mr-auto">
+            <div class="form-row">
+                <div class="form-inline">
+                    <div th:replace="fragments/filters :: ready(${ready})"></div>
+                    <div th:replace="fragments/filters :: afterYear(${year})"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Номер заявки</th>
+            <th scope="col">Сума</th>
+            <th scope="col">Валюта</th>
+            <th scope="col">Відправлено по терміналу</th>
+            <th class="dropdown" style="width: 20%">Дата
+                <a th:href="@{'/sort/{sortDate}' (sortDate = 'ASC')}"><i class="fa fa-chevron-circle-up"></i></a>
+                <a th:href="@{'/sort/{sortDate}' (sortDate = 'DESC')}"><i class="fa fa-chevron-circle-down"></i></a>
+            </th>
+            <th scope="col">Коментар</th>
+            <th scope="col">ПІБ</th>
+        </tr>
+        </thead>
+        <tbody>
+
+
+        <tr th:each ="person : ${listWuRequest}">
+            <td ><a th:href="@{'/admin/processRequestLimit/{id}'(id = ${person.id})}"><span th:utext="${person.id}">...</span></a></td>
+
+            <td th:utext="${person.amount}">...</td>
+            <td th:utext="${person.currency}">...</td>
+            <td th:utext="${person.amountSend}">...</td>
+            <td th:utext="${person.dateRequest}">...</td>
+            <td th:utext="${person.cooment}">...</td>
+            <td th:utext="${person.primaryUser.lastName}">...</td>
+
+            <td style="text-align: center"><a th:href="@{'/admin/processRequestLimit/{id}'(id=${person.id})}"><i class="fa fa-edit" style="font-size:20px"></i></a></td>
+            <td style="text-align: center"><a th:href="@{'/admin/delete/{id}'(id=${person.id})}"><i class="fa fa-trash" style="font-size:20px"></i></a></td>
+
+
+        </tr>
+        </tbody>
+    </table>
+
+
+    <div class="panel-group" style="margin-top:40px">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+
+            </div>
+           
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

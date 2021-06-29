@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html lang="ru"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <title>Spring Boot Thymeleaf + Spring Security</title>
+
+    <div th:replace="fragments/header :: header-css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/fileUpload.css}" />
+
+    <script src="/js/fileUpload.js?v=46" th:src="@{'/js/fileUpload.js?v=46'}"></script>
+
+</head>
+<body>
+
+
+<div th:replace="fragments/header :: header"/>
+<div th:replace="fragmentsPayment/formPayment :: book(${wuRequestPayment},${acWuDictUserTermDiv},'new')"></div>
+
+</body>
+</html>

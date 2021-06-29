@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+
+<body>
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+    <div class="row">
+        <th:block th:if="${typeMessage} == 'success'">
+                    <div class="alert alert-info" role="alert">
+                        Запит відправлено успішно !
+                    </div>
+
+                </th:block>
+                <th:block th:if="${typeMessage} == 'error'">
+                    <div class="alert alert-danger" role="alert">
+                        Помилка відправки запиту!
+                    </div>
+                </th:block>
+    </div>
+    <div class="row">
+        <div class="col">
+          <a th:href="@{/logout}">Вийти з системи</a>
+        </div>
+    </div>
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.springframework.org/schema/data/jaxb">
+
+<body>
+<!--В форму передаем WUзаявку ,параметры WU юзера, и признак - новая заявка, просмотр, редактирование формы -->
+<th:block th:fragment="book(wuRequestLimit,acWuDictUserTermDiv, action)">
+    <form autocomplete="off" enctype="multipart/form-data"
+          id="processRequestLimit" modelAttribute="wuRequestLimit" th:object="${wuRequestLimit}"
+          method="post" class="form-horizontal" role="form">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-3">
+                    <h2>Запит на збільшення лімітів на відправку переказів по МПС</h2>
+                    <div class="row">
+                        <div class="col">
+                            <small id="sm_terminal" class="form-text text-muted">Термінал</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getCodeTerminal()}" class="form-control"
+                                   id="terminal"
+                                   aria-describedby="terminalHelp" readonly>
+                        </div>
+                        <div class="col">
+                            <small id="sm_subAgent" class="form-text text-muted">Cубагент</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getTt()}" class="form-control"
+                                   id="subAgent"
+                                   aria-describedby="subAgentHelp" readonly>
+                        </div>
+                        <div class="col">
+                            <small id="sm_code" class="form-text text-muted">Код оператора</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getOperatorNo()}" class="form-control"
+                                   id="codeOperator"
+                                   aria-describedby="subAgentHelp" readonly>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <small id="sm_fio" class="form-text text-muted">ПІБ</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getOperatorFio()}" class="form-control"
+                                   id="fio"
+                                   aria-describedby="subAgentHelp"
+                                   readonly>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <small id="sm_mail" class="form-text text-muted">Email</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getOperatorEmail()}" class="form-control"
+                                   id="email"
+                                   aria-describedby="subAgentHelp" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Сума</label>
+                        <input id=amount type="text" th:field="*{amount}" class="form-control"
+                               aria-describedby="amountHelp" placeholder="0.00">
+                        <label th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"
+                               class="validation-message"></label>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="currencyS">Валюта</label>
+                        <select id="currencyS" th:field="*{currency}" class="form-control">
+                            <option value="">--Виберить валюту переказу--</option>
+                            <option value="USD">USD</option>
+                            <option value="UAN">UAN</option>
+                            <option value="EUR">EUR</option>
+                        </select>
+                        <label th:if="${#fields.hasErrors('currency')}" th:errors="*{currency}"
+                               class="validation-message"></label>
+                    </div>
+                    <div class="form-group">
+                        <label for="amountSend">Відправлено по терміналу</label>
+                        <input type="text" th:field="*{amountSend}" class="form-control" id="amountSend"
+                               aria-describedby="amountSendHelp" placeholder="0.00">
+                        <label th:if="${#fields.hasErrors('amountSend')}" th:errors="*{amountSend}"
+                               class="validation-message"></label>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="coment">Коментар виконавця</label>
+                        <textarea class="form-control" th:field="*{coment}" id="coment" rows="3"></textarea>
+                        <small id="comentHelp" class="form-text text-muted">Коментар виконавця</small>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-4">
+                            <!--Кнопка сохранения заявки сабмитит форму-->
+                            <button th:if="${action == 'new'}" type="submit" class="btn btn-primary btn-block"
+                                    form="processRequestLimit">
+                                <a th:href="@{/admin/changeLimit/newChangeLimit}"
+                                   class="btn btn-outline-secondary float-right mr-3"></a>
+                                Відправити запит
+                            </button>
+                            <button th:if="${action == 'update'}" type="submit" class="btn btn-primary btn-block"
+                                    form="processRequestLimit">
+                                <a th:href="@{admin/changeLimit/updateChangeLimit/{id}(id = ${wuRequestLimit.getId()})}"></a>
+                                Зберегти зміни
+                            </button>
+                        </div>
+                        <div class="col-4">
+                            <a th:href="@{/home/home}" class="btn btn-outline-secondary float-right mr-3">Вийти без
+                                відправки</a>
+                        </div>
+                    </div>
+                </div>
+
+    </div>
+    </div>
+    </form>
+</th:block>
+</body>
+</html>

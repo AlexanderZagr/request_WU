@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Boot Thymeleaf + Spring Security</title>
+
+    <div th:replace="fragments/header :: header-css"/>
+     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form autocomplete="off" action="#" th:action="@{/admin/processRequestChangePass}"
+                  th:object="${wurequest}" method="post" class="form-horizontal"
+                  role="form">
+                <br/>
+                <h2>Запит на зміну паролю</h2>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="text" th:value="${Attribute_1}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                  </div>
+                
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Код оператора</label>
+                    <input type="text" th:value="${Attribute_2}" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small id="emailHelp2" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                  </div>
+                
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Валюта</label>
+                    <input type="text" th:field="*{currency}" class="form-control" id="currency" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small id="emailHelp2" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                  </div>
+                
+                 <div class="form-group">
+                    <label for="exampleInputEmail1">Сумма</label>
+                    <input type="text" th:field="*{amount}" class="form-control" id="currency" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small id="emailHelp2" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                  </div>
+
+                   <div class="form-group">
+                    <label for="exampleInputEmail1">Cумма отправки</label>
+                    <input type="text" th:field="*{amountSend}" class="form-control" id="currency" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small id="emailHelp2" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                  </div>
+ 
+              
+  
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Коментарий</label>
+                    <input type="text" th:field="*{cooment}" class="form-control" id="currency" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small id="emailHelp2" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                  </div>
+ 
+                
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <button type="submit" class="btn btn-primary btn-block">Відправити запит</button>
+                    </div>
+                </div>
+
+                <span th:utext="${successMessage}"></span>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

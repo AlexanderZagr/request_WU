@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.springframework.org/schema/data/jaxb">
+
+<body>
+<th:block th:fragment="book(wuRequestPayment,acWuDictUserTermDiv, action)">
+
+    <form autocomplete="off" enctype="multipart/form-data"
+          id="processRequestPayment" modelAttribute="wuRequestPayment" th:object="${wuRequestPayment}"
+          method="post" class="form-horizontal" role="form">
+        <!-- Если фото есть - показали, если нет - дефолтная картинка -->
+        <!--Cкрипт imageLoader.js загружает фото и показывает его на форме. Фото загружается в БД в поле BLOB- ImageData->
+        <!-- <img th:if="${wuRequestPayment.getImageData() != null}" th:src="@{/admin/processRequestChangePayment/{id}/image(id = ${wuRequestPayment.getId()})}" class="img-thumbnail" th:id="${'imageBook'}"/>
+         <img th:if="${wuRequestPayment.getImageData() == null}" data-src="holder.js/50x100" th:alt="${wuRequestPayment.getId()}" class="img-thumbnail" th:id="${'imageBook'}"/>
+         <button type="button" class="btn btn-outline-primary mt-2" id="imageUpload">Загрузить файл</button>
+         <input type="file" name="file" hidden="hidden" multiple="" accept="image/*" id="imageInput"/>-->
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-3">
+                    <h2>Запит на зміну реквізитів переказу</h2>
+                    <div class="row">
+                        <div class="col">
+                            <small id="sm_terminal" class="form-text text-muted">Термінал</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getCodeTerminal()}" class="form-control"
+                                   id="terminal"
+                                   aria-describedby="terminalHelp" readonly>
+                        </div>
+                        <div class="col">
+                            <small id="sm_subAgent" class="form-text text-muted">Cубагент</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getTt()}" class="form-control"
+                                   id="subAgent"
+                                   aria-describedby="subAgentHelp" readonly>
+                        </div>
+                        <div class="col">
+                            <small id="sm_code" class="form-text text-muted">Код оператора</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getOperatorNo()}" class="form-control"
+                                   id="codeOperator"
+                                   aria-describedby="subAgentHelp" readonly>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <small id="sm_fio" class="form-text text-muted">ПІБ</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getOperatorFio()}" class="form-control"
+                                   id="fio"
+                                   aria-describedby="subAgentHelp"
+                                   readonly>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <small id="sm_mail" class="form-text text-muted">Email</small>
+                            <input type="text" th:value="${acWuDictUserTermDiv.getOperatorEmail()}" class="form-control"
+                                   id="email"
+                                   aria-describedby="subAgentHelp" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <small id="comentHelp" class="form-text text-muted">Коментар виконавця</small>
+                            <textarea class="form-control" th:field="*{coment}" id="coment" rows="2"></textarea>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-3">
+                    <div class="upload-content">
+                        <div class="single-upload">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div id="singleUploadForm" name="singleUploadForm">
+                                        <!-- Показали кнопку закачки файла если это новая заявка-->
+                                        <input th:if="${action == 'new'}" id="singleFileUploadInput"
+                                                th:id="${'singleFileUploadInput'}" type="file" name="file"
+                                               class="file-input"/>
+
+                                        <!-- Спрятали кнопку закачки файла если это редактирование заявки-->
+                                        <input th:if="${action != 'new'}" th:id="${'singleFileUploadInput'}"
+                                               style="display:none" type="file" name="file" class="file-input"/>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <!--Кнопка загрузки файла , на которую настроен js-->
+                                    <button th:if="${action == 'new'}" id="buttSingleUpload"
+                                            class="btn btn-primary btn-block">Завантажити файл
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="upload-response">
+                                <div id="singleFileUploadError"></div>
+                                <div id="singleFileUploadSuccess"></div>
+                                <!--Для просмотра завки ,если файл к ней прикреплен можно его скачать -->
+                                <div th:id="${'singleFileUploadSuccess'}"
+                                     th:if="${wuRequestPayment.getSingleFileUploadInput() != null}">
+                                    <a th:href="@{'/downloadFile/{fileName}'(fileName=${wuRequestPayment.getImageStr()})}"><i
+                                            class="icon-pencil"></i> Cкачать файл : <span
+                                            th:text="${wuRequestPayment.getSingleFileUploadInput() }"></span> </a>
+                                </div>
+                                <!--Для просмотра завки ,если файла нет у заявки -->
+                                <div th:id="${'singleFileUploadSuccess'}"
+                                     th:if="${wuRequestPayment.getSingleFileUploadInput() == null}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <!--Кнопка сохранения заявки сабмитит форму-->
+                    <button th:if="${action == 'new'}" type="submit" class="btn btn-primary btn-block"
+                            form="processRequestPayment">
+                        <a th:href="@{/admin/changePayment/newChangePayment}"
+                           class="btn btn-outline-secondary float-right mr-3"></a>
+                        Відправити запит
+                    </button>
+
+                    <button th:if="${action == 'update'}" type="submit" class="btn btn-primary btn-block"
+                            form="processRequestPayment">
+                        <a th:href="@{admin/changePayment/updateChangePayment/{id}(id = ${wuRequestPayment.getId()})}"></a>
+                        Зберегти зміни
+                    </button>
+                </div>
+                <div class="col-4">
+                    <a th:href="@{/home/home}" class="btn btn-outline-secondary float-right mr-3">Вийти без
+                        відправки</a>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- <th:block layout:fragment="scripts">
+         <script th:src="@{'/js/imageLoader.js'}"></script>
+         <script th:inline="javascript">
+             var imageLoader = new ImageLoader('imageUpload', 'imageInput', 'imageBook');
+             imageLoader.init();
+         </script>
+     </th:block>
+ -->
+</th:block>
+
+
+</body>
+</html>
